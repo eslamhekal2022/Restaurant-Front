@@ -1,0 +1,101 @@
+.add-item-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  border-radius: 12px;
+}
+
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.add-item-form input,
+.add-item-form textarea,
+.add-item-form select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.add-item-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.upload-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-preview {
+  position: relative;
+}
+
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.image-preview button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  background-color: #6a0dad;
+  color: white;
+  padding: 12px;
+  font-size: 17px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #4b088a;
+}
+
+@media (max-width: 500px) {
+  .add-item-container {
+    margin: 20px;
+    padding: 15px;
+  }
+
+  .image-preview img {
+    width: 80px;
+    height: 80px;
+  }
+}

@@ -1,0 +1,144 @@
+/* Container */
+.all-products-page {
+  padding: 2rem;
+  font-family: 'Cairo', sans-serif;
+  background-color: #fdfdfd;
+}
+
+/* Category Tabs */
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.category-tab {
+  padding: 0.5rem 1rem;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.category-tab.active,
+.category-tab:hover {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Products Grid */
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.product-name {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.size-prices p,
+.product-price {
+  margin: 0.25rem 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Buttons */
+.product-actions {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 1rem 1rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btnProduct {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.add-to-cart-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.btn-wishlist {
+  background-color: #ff9800;
+  color: white;
+}
+
+.btnProduct:hover {
+  opacity: 0.85;
+}
+
+/* No products */
+.no-products,
+.no-image {
+  text-align: center;
+  color: #999;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.product-sizes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .product-card {
+    font-size: 0.9rem;
+  }
+
+  .product-info {
+    padding: 0.8rem;
+  }
+
+  .btnProduct {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+  }
+}

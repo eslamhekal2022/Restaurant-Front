@@ -1,0 +1,17 @@
+.MainHome{
+    height: 80vh;
+    background-color: darkblue;
+}
+.MainHome img{
+    width: 100%;
+    height: 100%;
+}
+
+@media(max-width:900px){
+    .MainHome {
+        height: auto;
+    }
+    .MainHome img{
+        object-fit: cover;
+    }
+}
