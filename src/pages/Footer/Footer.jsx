@@ -1,13 +1,14 @@
 import React from 'react';
 import './footer.css';
 import { Link } from 'react-router-dom';
-
+import logo from "../ProductsUmages/Logo.png"
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-logo">
-            <h1 className='LogoText'>El-Mister</h1>
+        <img src={logo} className='logo' />
+        <p className='text-capitalize'> place-pizza</p>
           <p>Your one-stop shop for everything!</p>
         </div>
 
