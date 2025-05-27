@@ -60,6 +60,8 @@ const routers = createBrowserRouter([
       { path: "register", element: <Register /> },
       { path: "UserDet/:id", element: <UserDet /> },
       { path: "login", element: <Login /> },
+            { path: "allProducts", element: <AllProducts />  },
+
       { path: "allProducts", element: <AllProducts /> },
       { path: "AddReview", element: <AddReview /> },
       { path: "Contact", element: <Contact /> },

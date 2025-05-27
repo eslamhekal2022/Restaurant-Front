@@ -10,6 +10,7 @@ export default function Home() {
     <div>  
 <MainHome/>
 <CategoryProduct/>
+<ReviewUsers/>
     </div>
   )
 }

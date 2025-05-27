@@ -55,7 +55,7 @@ export default function CartComponent() {
                   />
                 </div>
                 <div className="cart-item-details">
-                  <h3 className="item-name">{item.name}</h3>
+                  <h3 className="item-name">{item.name}</h3><span className='text-capitalize'>({item.size})</span>
                   <p className="item-price">Price: ${item.price?.toFixed(2)}</p>
                   <div className="quantity-controls">
                     <button onClick={() => decreaseQuantity(item)} disabled={item.quantity <= 1}>-</button>

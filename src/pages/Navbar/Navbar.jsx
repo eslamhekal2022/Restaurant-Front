@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext.js';
 import { useUser } from '../../context/userContext.js';
 import { useSelector } from 'react-redux';
-import logo from "../ProductsUmages/Logo.jpg"
+import logo from "../ProductsUmages/Logo.png"
+import { MdRestaurantMenu  } from "react-icons/md";
 
 export default function Navbar() {
   const { countCart, countWishList } = useCart();
@@ -36,7 +37,7 @@ export default function Navbar() {
         <div className="nav-left">
           <Link onClick={handleCloseMenu} to="/" className="logo">
             <img src={logo} alt='logo'/>
-            <h1 className='LogoText'>El-Mister</h1>
+            <h1 className='LogoText'>Pizza-Place</h1>
           </Link>
         </div>
 
@@ -53,6 +54,10 @@ export default function Navbar() {
         <div className={`nav-right ${menuOpen ? 'menu-open' : ''}`}>
           {token && (
             <>
+            
+              <Link onClick={handleCloseMenu} to="/allProducts" className="icon-link">
+ <MdRestaurantMenu size={28}  />   
+            </Link>
               <Link onClick={handleCloseMenu} to="/cart" className="icon-link">
                 <i className="fa fa-cart-plus"></i>
                 <span className="count">{countCart}</span>

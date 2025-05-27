@@ -13,35 +13,27 @@ const [users, setUsers] = useState([])
 const [countUsers, setcountUsers] = useState(0)
 const [Loading, setLoading] = useState(null)
   
-const addToCart = async (productId, quantity = 1) => {
-    try {
-      const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}/AddToCart`,
-        { productId, quantity },
-        {
-          headers: {
-            token: localStorage.getItem("token"),
-          },
-        }
-      );
-
-      if (data.success) {
-        getCart()
-      }
-    } catch (err) {
-      console.error("Error adding to cart:", err.response?.data?.message || err.message);
-      toast.error("Failed to add item to cart");
-    }
-  };
-
-  const removeCart=async(product)=>{
-    const {data}=await axios.delete(`${process.env.REACT_APP_API_URL}/deleteProductCart/${product}`,{
-      headers: {token:localStorage.getItem("token")}
-    })
-    if(data.success) {
-      getCart()
-    }
+ const addToCart = async (productId, quantity, size) => {
+  try {
+    const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/AddToCart`, {
+      productId,
+      quantity,
+      size,
+    }, {
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    });
+    if(data.success)
+{
+getCart()
+}
+    return data;
+  } catch (err) {
+    console.error("🧨 Failed to add to cart:", err.response?.data || err.message);
+    throw err;
   }
+};
 
   const getCart = async () => {
     try {
@@ -59,6 +51,16 @@ const addToCart = async (productId, quantity = 1) => {
       console.error("Error fetching cart:", err.response?.data?.message || err.message);
     }
   };
+
+  const removeCart=async(product)=>{
+    const {data}=await axios.delete(`${process.env.REACT_APP_API_URL}/deleteProductCart/${product}`,{
+      headers: {token:localStorage.getItem("token")}
+    })
+    if(data.success) {
+      getCart()
+    }
+  }
+
 
 
 

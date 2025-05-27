@@ -1,5 +1,5 @@
 import React from 'react'
-import mainImage from "../ProductsUmages/Main-image.jpg"
+import mainImage from "../ProductsUmages/Main-image.png"
 import './mainHome.css'
 
 export default function MainHome() {

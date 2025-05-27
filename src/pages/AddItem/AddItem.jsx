@@ -89,14 +89,14 @@ const AddItem = () => {
 
       if (data.success) {
         toast.success("تمت إضافة الطبق بنجاح!");
-        setFormData({
-          name: "",
-          description: "",
-          category: "breakfast",
-          sizes: { s: "", m: "", l: "" },
-          images: [],
-          imagePreviews: [],
-        });
+        // setFormData({
+        //   name: "",
+        //   description: "",
+        //   category: "pizza",
+        //   sizes: { s: "", m: "", l: "" },
+        //   images: [],
+        //   imagePreviews: [],
+        // });
         getAllProducts();
       } else {
         toast.warning("حدث خطأ أثناء الإضافة.");
