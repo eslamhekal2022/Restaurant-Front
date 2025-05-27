@@ -17,9 +17,8 @@ export default function AllProducts() {
     activeCategory,
     setActiveCategory,
     getAllProducts,
-    addToWihsList
   } = useProduct();
-
+const {addToWihsList}=useCart()
   // 🗑 حذف منتج
   const deleteProduct = async (id) => {
     const result = await Swal.fire({

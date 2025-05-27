@@ -7,7 +7,7 @@ export default function CategoryProduct() {
   const { productCategory } = useProduct();
 
   return (
-    <section className="featured-categories" dir="rtl">
+    <section className="featured-categories">
       <div className="container-featuredCat">
         <h2 className="titleHome"> featured categories</h2>
         <div className="categories-grid">
