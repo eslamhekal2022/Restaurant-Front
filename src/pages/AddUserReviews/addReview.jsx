@@ -3,9 +3,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import './addReview.css'
+import { useNavigate } from 'react-router-dom';
 const AddReview = () => {
   const [form, setForm] = useState({ comment: '', rating: 5 });
-
+const navigate=useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -16,6 +17,7 @@ const AddReview = () => {
       });
       if(data.success){
         toast.success("goodReview")
+        navigate("/")
       }
     } catch (err) {
       console.log(err)
