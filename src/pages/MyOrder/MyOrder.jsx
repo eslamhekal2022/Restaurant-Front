@@ -5,20 +5,20 @@ import "./Myorder.css";
 
 export default function MyOrder() {
   const [orderDetails, setOrderDetails] = useState([]);
-
+const token=localStorage.getItem("token")
   async function fetchMyOrder() {
     try {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API_URL}/getMeOrders`,
         {
           headers: {
-            token: localStorage.getItem("token"),
-          },
+token          },
         }
       );
 
       if (data.success) {
-        setOrderDetails(data.data);
+         setOrderDetails(data.data);
+         console.log("orderDeatils",data.data)
       } else {
         toast.info(data.message || "No orders found");
       }
@@ -66,10 +66,18 @@ export default function MyOrder() {
                     alt={prod.name}
                     className="product-image"
                   />
-                  <p className="product-name">{prod.name}</p>
+                  <p className="product-name">{prod.name} <span className="text-capitalize">({prod.size})</span></p>
                   <p><strong>Quantity:</strong> {prod.quantity}</p>
                   <p><strong>Price:</strong> ${prod.price}</p>
-                  <p className="product-description">{prod.description}</p>
+    <div className="product-description">
+  {(prod.description || "")
+    .split('*')
+    .filter(item => item.trim())
+    .map((item, idx) => (
+      <p key={idx}>🥄 {item.trim()}</p>
+    ))
+  }
+</div>
                 </div>
               ))}
             </div>

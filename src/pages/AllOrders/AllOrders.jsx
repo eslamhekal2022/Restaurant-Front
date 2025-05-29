@@ -117,6 +117,7 @@ export default function AllOrders() {
                 <p>Quantity: {prod.quantity}</p>
               </div>
             ))}
+            <p> totalPrice:<span> {order.totalPrice } EGP</span></p>
 
             <hr />
           </div>

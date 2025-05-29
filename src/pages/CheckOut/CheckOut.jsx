@@ -17,8 +17,9 @@ export default function CheckoutPage() {
     (acc, item) => acc + (item.price || 0) * (item.quantity || 1),
     0
   );
+  console.log("cart",cart)
 
-  const handleConfirmOrder = async (id) => {
+  const handleConfirmOrder = async () => {
     try {
       const { data } = await axios.post(
         `${process.env.REACT_APP_API_URL}/checkOut`,
@@ -52,6 +53,7 @@ export default function CheckoutPage() {
     } catch (error) {
       toast.error("Something went wrong");
       console.error(error);
+      
     }
   };
 
@@ -67,7 +69,7 @@ export default function CheckoutPage() {
             <div className="checkout-items">
               {items.map((item, index) => (
                 <div key={index} className="checkout-item">
-                  <p><strong>{item.name}</strong> × {item.quantity} — ${item.price}</p>
+<p><strong>{item.name}</strong> ({item.size}) × {item.quantity} — ${item.price?.toFixed(2)}</p>
                 </div>
               ))}
             </div>
@@ -78,7 +80,7 @@ export default function CheckoutPage() {
       </div>
 
       {items.length > 0 && (
-        <button className="confirm-order-btn" onClick={() => handleConfirmOrder(items[0]._id)}>
+        <button className="confirm-order-btn" onClick={handleConfirmOrder}>
           ✅ Confirm Order
         </button>
       )}

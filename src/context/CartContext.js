@@ -81,6 +81,7 @@ getCart()
 
       if (data.success) {
         getWishList()
+        console.log("productIdWishList",productId)
       }
     } catch (err) {
       console.error("Error adding to cart:", err.response?.data?.message || err.message);

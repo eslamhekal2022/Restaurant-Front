@@ -9,7 +9,7 @@ export default function ReviewUsers() {
   const [MeReview, setMeReview] = useState(false);
 
   const user = useSelector((state) => state.user.user);
-
+const userId=localStorage.getItem("userId")
   useEffect(() => {
     getAllReview();
   }, []);
@@ -52,10 +52,9 @@ export default function ReviewUsers() {
             .filter(review => review.userId)
             .map((review) => (
               <div className="review-card" key={review._id}>
-              {(user.role === "moderator" ) && (
-                <p className='DeleteRev' onClick={() => deleteReview(review._id)}>x</p>
-              )}
-
+             {review.userId?._id === user?.id && (
+  <p className='DeleteRev' onClick={() => deleteReview(review._id)}>x</p>
+)}
                 <img
                   className='user-image'
                   src={

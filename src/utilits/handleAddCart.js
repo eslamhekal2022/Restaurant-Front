@@ -1,4 +1,3 @@
-// hooks/useHandleAddToCart.js
 import { toast } from "react-toastify";
 import { useCart } from "../context/CartContext.js";
 import Swal from "sweetalert2";
@@ -11,7 +10,7 @@ export const useHandleAddToCart = () => {
       acc[s.size] = `${s.size.toUpperCase()} - ${s.price} EGP`;
       return acc;
     }, {});
-
+    
     const { value: selectedSize } = await Swal.fire({
       title: "Select Size",
       input: "select",
