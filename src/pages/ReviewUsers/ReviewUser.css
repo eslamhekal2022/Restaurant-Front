@@ -1,98 +1,178 @@
+/* === General Container === */
 .ReviewUsers {
-  width: 100%;
-  padding: 3rem 1rem;
-    background-color: #f29d0070;
+  padding: 2rem;
+  background-color: #fffdf5;
+  min-height: 100vh;
   text-align: center;
-  margin: 5px 0;
 }
 
+/* === Title === */
+.titleHome {
+  font-size: 2.2rem;
+  color: #d35400;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
 
-
+/* === Review Grid === */
 .review-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 90%;
-  margin: 0 auto;
-  position: relative;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  justify-content: center;
 }
 
+/* === Review Card === */
 .review-card {
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 20px;
   position: relative;
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #fefefe;
+  border: 1px solid #f1c40f;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
 }
 
 .review-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  transform: scale(1.02);
 }
 
+/* === Image === */
 .user-image {
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 1rem;
-  border: 3px solid #4CAF50;
+  border: 2px solid #f1c40f;
 }
 
+/* === Name === */
 .user-name {
-  font-size: 1.1rem;
-  color: #333;
-  margin: 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
 }
 
-.review-card
+/* === Rating === */
 .rating {
+  font-size: 1rem;
   color: #f39c12;
-  font-weight: bold;
-  margin: 0.3rem 0;
+  margin-bottom: 0.5rem;
 }
 
 .comment {
   font-style: italic;
-  color: #555;
-  margin-top: 0.5rem;
-  line-height: 1.5;
-  padding: 0 10px;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+.btnsActionRev{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
+.DeleteRev,.EditRev {
+  
+  font-size: 23px;
+  background-color: red;
+  color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+  user-select: none;
+  margin:  2px;
+}
+.EditRev{
+    
+  background-color: green !important;
+
 }
 
 
 .DeleteRev {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: red;
+  right: 8px;
+}
+
+.EditRev {
+  right: 40px;
+}
+
+.DeleteRev:hover,
+.EditRev:hover {
+  background-color: #e67e22;
+}
+
+/* === Inline Edit Section === */
+.inline-edit {
+  margin-top: 1rem;
+  background-color: #fffbe9;
+  border: 1px solid #f1c40f;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: right;
+}
+
+.inline-edit h4 {
+  font-size: 1.1rem;
+  color: #d35400;
+  margin-bottom: 0.5rem;
+}
+
+.inline-edit textarea,
+.inline-edit select {
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+/* === Buttons in Inline Edit === */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.modal-buttons button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #f1c40f;
   color: white;
-  padding: 5px;
-  transition: .3s;
-  border-radius: 50%;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  font-weight: bold;
+  transition: background 0.2s;
 }
-.DeleteRev:hover{
-  background-color: red;
 
-cursor: pointer;
+.modal-buttons button:hover {
+  background-color: #e67e22;
 }
-/* Responsive improvements */
-@media (max-width: 600px) {
-  .descTesmon {
-    font-size: 1.5rem;
-  }
 
-  .review-container {
-    gap: 1.2rem;
-  }
+/* === No Reviews Message === */
+.no-reviews {
+  font-size: 1.1rem;
+  color: #888;
+  margin-top: 2rem;
+}
 
-  .review-card {
-    padding: 15px;
-  }
+/* === Loading === */
+.loading {
+  font-size: 1.2rem;
+  color: #999;
+  margin-top: 2rem;
 }

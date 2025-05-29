@@ -6,10 +6,13 @@ import { useSelector } from 'react-redux';
 
 export default function ReviewUsers() {
   const [reviews, setReviews] = useState([]);
-  const [MeReview, setMeReview] = useState(false);
+  const [editReviewId, setEditReviewId] = useState(null);
+  const [editComment, setEditComment] = useState('');
+  const [editRating, setEditRating] = useState(1);
 
   const user = useSelector((state) => state.user.user);
-const userId=localStorage.getItem("userId")
+  const userId = localStorage.getItem("userId");
+
   useEffect(() => {
     getAllReview();
   }, []);
@@ -39,6 +42,30 @@ const userId=localStorage.getItem("userId")
     }
   }
 
+  function openEditModal(review) {
+    setEditReviewId(review._id);
+    setEditComment(review.comment);
+    setEditRating(review.rating);
+  }
+
+  async function handleEditSubmit() {
+    try {
+      const { data } = await axios.put(`${process.env.REACT_APP_API_URL}/updateReview/${editReviewId}`, {
+        comment: editComment,
+        rating: editRating,
+      });
+
+      if (data.success) {
+        toast.success("تم تعديل التقييم بنجاح");
+        setEditReviewId(null);
+        getAllReview();
+      }
+    } catch (error) {
+      toast.error("فشل في تعديل التقييم");
+      console.error(error);
+    }
+  }
+
   if (!user) return <p className="loading">Loading user data...</p>;
 
   return (
@@ -52,9 +79,12 @@ const userId=localStorage.getItem("userId")
             .filter(review => review.userId)
             .map((review) => (
               <div className="review-card" key={review._id}>
-             {review.userId?._id === user?.id && (
-  <p className='DeleteRev' onClick={() => deleteReview(review._id)}>x</p>
-)}
+                {review.userId?._id === user?.id && (
+                  <div className='btnsActionRev'>
+                    <p className='DeleteRev' onClick={() => deleteReview(review._id)}>x</p>
+                    <p className='EditRev' onClick={() => openEditModal(review)}>!</p>
+                  </div>
+                )}
                 <img
                   className='user-image'
                   src={
@@ -69,6 +99,27 @@ const userId=localStorage.getItem("userId")
                 <h3 className="user-name">{review.userId.name}</h3>
                 <p className="rating">Rating: {review.rating} ⭐</p>
                 <p className="comment">“{review.comment}”</p>
+
+                {editReviewId === review._id && (
+                  <div className="inline-edit">
+                    <h4>تعديل التقييم</h4>
+                    <textarea
+                      rows="3"
+                      value={editComment}
+                      onChange={(e) => setEditComment(e.target.value)}
+                      placeholder="اكتب تعليقك هنا"
+                    />
+                    <select value={editRating} onChange={(e) => setEditRating(Number(e.target.value))}>
+                      {[1, 2, 3, 4, 5].map((num) => (
+                        <option key={num} value={num}>{num} ⭐</option>
+                      ))}
+                    </select>
+                    <div className="modal-buttons">
+                      <button onClick={handleEditSubmit}>حفظ</button>
+                      <button onClick={() => setEditReviewId(null)}>إلغاء</button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))
         )}

@@ -6,6 +6,7 @@ import { useCart } from '../../context/CartContext';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { useHandleAddToCart } from '../../utilits/handleAddCart.js';
+import { FaStar } from 'react-icons/fa';
 
 export default function ProductDet() {
   const [productDetails, setProductDet] = useState({ images: [], reviews: [] });
@@ -28,6 +29,7 @@ export default function ProductDet() {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/productDetails/${id}`);
       if (data.success) {
         setProductDet(data.data);
+        console.log("productDet",data.data)
         setMainImage(`${process.env.REACT_APP_API_URL}${data.data.images[0]}`);
       } else {
         setError("لم يتم العثور على المنتج");
@@ -133,8 +135,19 @@ export default function ProductDet() {
         <div className="product-left">
           <div className="product-main-image">
             <img src={mainImage} alt={productDetails.name} className="main-image" />
-          </div>
-          <div className="product-thumbnails">
+     {productDetails.averageRating ? 
+         <div className="star-container">
+  <FaStar className="star-icon" />
+<span className="star-text">
+{Number.isInteger(productDetails.averageRating)
+  ? productDetails.averageRating
+  : productDetails.averageRating.toFixed(1)}
+</span>
+</div>
+: null}
+            </div>
+ 
+            {productDetails.images.length>1?      <div className="product-thumbnails">
             {productDetails.images.map((img, index) => (
               <img
                 key={index}
@@ -144,11 +157,15 @@ export default function ProductDet() {
                 onClick={() => setMainImage(`${process.env.REACT_APP_API_URL}${img}`)}
               />
             ))}
-          </div>
+          </div>:null
+        }
         </div>
 
         <div className="product-right">
           <p className="product-category">Category: {productDetails.category}</p>
+
+
+
           <h1 className="product-title">{productDetails.name.toUpperCase()}</h1>
           <div className="product-description">
             {productDetails.description

@@ -94,7 +94,7 @@ export default function AllOrders() {
             <p><strong>Name:</strong> {order.userId?.name}</p>
             <p><strong>Email:</strong> {order.userId?.email}</p>
             <p><strong>phone:</strong> 0{order.userId?.phone}</p>
-            <p><strong>Total Price:</strong> ${order.totalPrice}</p>
+            <p><strong>Total Price:</strong> {order.totalPrice} EGP</p>
             <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
             <div>
 
@@ -117,7 +117,6 @@ export default function AllOrders() {
                 <p>Quantity: {prod.quantity}</p>
               </div>
             ))}
-            <p> totalPrice:<span> {order.totalPrice } EGP</span></p>
 
             <hr />
           </div>
