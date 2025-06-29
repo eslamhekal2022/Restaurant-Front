@@ -19,7 +19,6 @@ const userSlice = createSlice({
         state.user.image = action.payload;
       }
     },
-
   },
 });
 

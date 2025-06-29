@@ -32,6 +32,9 @@ import OrderDet from "./pages/OrderDet/OrderDet.jsx";
 import Contact from "./pages/Contact/Contact.jsx";
 import About from "./pages/About/About.jsx";
 import GetContacts from "./pages/GetContacts/GetContacts.jsx";
+import { useEffect } from "react";
+import { setUserRedux } from "./Redux/user.js";
+import ForgetPassword from "./pages/ForgetPassword/ForgetPass.jsx";
 
 
 
@@ -76,15 +79,22 @@ const routers = createBrowserRouter([
       { path: "Checkout", element: <CheckoutPage /> },
       { path: "meOrder", element: <MyOrder /> },
       { path: "OrderDet/:id", element: <OrderDet /> },
+      { path: "ForgetPassword", element: <ForgetPassword /> },
       
     ],
   },
 ]);
 
 export default function App() {
+ const dispatch = useDispatch();
 
+  useEffect(() => {
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      dispatch(setUserRedux(JSON.parse(savedUser)));
+    }
+  }, []);
   return (
-    <Provider store={store}>
     <CartProvider>
       <UserProvider>
       <ProductProvider>
@@ -108,7 +118,6 @@ export default function App() {
         </UserProvider>
     </CartProvider>
 
-    </Provider>
   );
   
 }

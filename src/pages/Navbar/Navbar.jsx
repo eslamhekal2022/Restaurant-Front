@@ -22,7 +22,7 @@ export default function Navbar() {
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchQuery(query);
-    navigate(query.trim() ? `/search?query=${query}` : `/`);
+    navigate(query.trim() ? `/search?query=${query}` : ``);
   };
 
   function Logout() {
@@ -33,7 +33,8 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <div className="nav-content">
+
+    <div className="nav-content">
         <div className="nav-left">
           <Link onClick={handleCloseMenu} to="/" className="logo">
             <img src={logo} alt='logo'/>

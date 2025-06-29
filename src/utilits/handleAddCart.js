@@ -11,7 +11,7 @@ export const useHandleAddToCart = () => {
       return acc;
     }, {});
     
-    const { value: selectedSize } = await Swal.fire({
+    const { value:selectedSize } = await Swal.fire({
       title: "Select Size",
       input: "select",
       inputOptions: sizeOptions,

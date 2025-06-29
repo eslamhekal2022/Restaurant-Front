@@ -1,25 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { useCart } from "../../context/CartContext";
 import { useProduct } from "../../context/productContext";
-import "./allProducts.css";
 import axios from "axios";
 import { useHandleAddToCart } from "../../utilits/handleAddCart.js";
+import "./allProducts.css";
 
 export default function AllProducts() {
-    const { handleAddToCart } = useHandleAddToCart();
-
+  const { handleAddToCart } = useHandleAddToCart();
   const {
     products,
     categories,
     activeCategory,
     setActiveCategory,
     getAllProducts,
+    TotalPages,
+    CurrentPage,
+    setTotalPages,
+    setCurrentPage,
   } = useProduct();
-const {addToWihsList}=useCart()
-  // 🗑 حذف منتج
+
+  const { addToWihsList } = useCart();
+
+  useEffect(() => {
+    getAllProducts(CurrentPage);
+  }, [CurrentPage]);
+
   const deleteProduct = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -36,7 +44,7 @@ const {addToWihsList}=useCart()
         const res = await axios.delete(`${process.env.REACT_APP_API_URL}/removeProduct/${id}`);
         if (res.data.success) {
           toast.success("Product deleted successfully");
-          getAllProducts();
+          getAllProducts(CurrentPage);
         } else {
           toast.error(res.data.message || "Error deleting product");
         }
@@ -46,8 +54,6 @@ const {addToWihsList}=useCart()
     }
   };
 
-
-  // 🔍 فلترة المنتجات حسب التصنيف
   const filteredProducts =
     activeCategory === "all"
       ? products
@@ -116,6 +122,24 @@ const {addToWihsList}=useCart()
           <p className="no-products">No products available.</p>
         )}
       </div>
+
+      {TotalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={CurrentPage === 1}
+          >
+            Previous
+          </button>
+          <span>Page {CurrentPage} of {TotalPages}</span>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, TotalPages))}
+            disabled={CurrentPage === TotalPages}
+            >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

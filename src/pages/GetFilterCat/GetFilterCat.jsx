@@ -3,9 +3,11 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import './GetFilterCat.css';
 import { Link } from 'react-router-dom';
+import { useHandleAddToCart } from '../../utilits/handleAddCart';
 
 export default function GetFilterCat({ category }) {
   const [data, setdata] = useState([]);
+    const { handleAddToCart } = useHandleAddToCart();
 
   async function getBYCategory() {
     try {
@@ -33,13 +35,16 @@ export default function GetFilterCat({ category }) {
     <div className='GetProductsCat'>
       <div className="ContainerGetProductsCat">
         {data?.map((x, i) => (
-          <Link to={`/ProductDet/${x._id}`} className='LinkProductDet' id='Link' key={x._id}>
             <div className='productFilterCat'>
-              <img
+                     <Link to={`/ProductDet/${x._id}`} className='LinkProductDet' id='Link' key={x._id}>
+
+            <img
                 src={`${process.env.REACT_APP_API_URL}${x.images[0]}`}
                 alt={x.name}
                 className="product-image"
               />
+                        </Link>
+
               <p>{x.name}</p>
               <p title={x.description}>{x.description.slice(0, 40)}...</p>
        <div className="product-sizes">
@@ -48,8 +53,9 @@ export default function GetFilterCat({ category }) {
       {size.size.toUpperCase()} : {size.price} EGP
     </p>
   ))}
+            <button className="add-to-cart" onClick={() => handleAddToCart(x)}>Add To Cart 🛒</button>
+
 </div>            </div>
-          </Link>
         ))}
       </div>
     </div>

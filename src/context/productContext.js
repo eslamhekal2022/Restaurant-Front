@@ -10,28 +10,33 @@ export const ProductProvider = ({ children }) => {
     const [categories, setCategories] = useState([]);
     const [activeCategory, setActiveCategory] = useState("all");
   const [productCategory, setproductCategory] = useState([])
-    async function getAllProducts() {
-      try {
-        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/getAllProducts`,{
-          headers:{
-            token:localStorage.getItem('token')
-          }
-        });
-      
-        if (data.success) {
-          setProducts(data.data);
-          const uniqueCategories = [...new Set(data.data.map((p) => p.category))];
-          setCategories(uniqueCategories);
-          setproductCount(data.count)
-        }
-  
-      } catch (error) {
-        toast.error("حدث خطأ أثناء جلب البيانات");
-        console.error("Error fetching products:", error);
+  const [TotalPages, setTotalPages] = useState([])
+  const [CurrentPage, setCurrentPage] = useState([])
+  async function getAllProducts(page = 1, limit =7) {
+  try {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_API_URL}/getAllProducts?page=${page}&limit=${limit}`,
+      {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
       }
-  
+    );
+
+    if (data.success) {
+      setProducts(data.data);
+      const uniqueCategories = [...new Set(data.data.map((p) => p.category))];
+      setCategories(uniqueCategories);
+      setproductCount(data.count);
+      setTotalPages(data.totalPages); // تحتاج لإضافته في ال context
+      setCurrentPage(data.currentPage); // تحتاج لإضافته في ال context
     }
-  
+  } catch (error) {
+    toast.error("حدث خطأ أثناء جلب البيانات");
+    console.error("Error fetching products:", error);
+  }
+}
+
 
     async function getProductCat() {
       try {
@@ -55,7 +60,7 @@ export const ProductProvider = ({ children }) => {
   }, []);
 
   return (
-    <ProductContext.Provider value={{getAllProducts,productCategory,products,categories,activeCategory,setActiveCategory,productCount}}>
+    <ProductContext.Provider value={{TotalPages,CurrentPage,setTotalPages,setCurrentPage,getAllProducts,productCategory,products,categories,activeCategory,setActiveCategory,productCount}}>
       {children}
     </ProductContext.Provider>
   );

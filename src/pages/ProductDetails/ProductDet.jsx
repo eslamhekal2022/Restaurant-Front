@@ -19,7 +19,6 @@ export default function ProductDet() {
   const [editRating, setEditRating] = useState(0);
   const [editComment, setEditComment] = useState("");
   const { id } = useParams();
-  const { addToCart } = useCart();
     const { handleAddToCart } = useHandleAddToCart();
 
   const user = useSelector((x) => x.user.user);
@@ -140,7 +139,7 @@ export default function ProductDet() {
   <FaStar className="star-icon" />
 <span className="star-text">
 {Number.isInteger(productDetails.averageRating)
-  ? productDetails.averageRating
+  ? `${productDetails.averageRating} `
   : productDetails.averageRating.toFixed(1)}
 </span>
 </div>

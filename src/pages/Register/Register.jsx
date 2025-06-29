@@ -11,56 +11,48 @@ const Register = () => {
     email: "",
     password: "",
     phone: "",
-    image: null,  // إضافة خاصية للصورة
+    image: null,
   });
   const [preview, setPreview] = useState(null);
-
-
   const { setRefresh } = useUserContext();
   const navigate = useNavigate();
 
-  // Handle Input Change
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle Image Change
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setUser({ ...user, image: file });
+    setUser((prev) => ({ ...prev, image: file }));
     if (file) {
-      setPreview(URL.createObjectURL(file)); // توليد رابط للصورة
+      setPreview(URL.createObjectURL(file));
     }
-  }; 
-
+  };
 
   const handleRemoveImage = () => {
-    setUser({ ...user, image: null });
+    setUser((prev) => ({ ...prev, image: null }));
     setPreview(null);
   };
-  // Handle Form Submit
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
-      formData.append("name", user.name);
-      formData.append("email", user.email);
-      formData.append("password", user.password);
-      formData.append("phone", user.phone);
-      if (user.image) {
-        formData.append("image", user.image);  // إضافة الصورة للـ FormData
-      }
+      Object.entries(user).forEach(([key, value]) => {
+        if (value) formData.append(key, value);
+      });
 
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/register`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",  // تحديد نوع المحتوى
+          "Content-Type": "multipart/form-data",
         },
       });
 
       if (res.data?.success) {
-        navigate("/login");
-        setRefresh((prev) => !prev);
         localStorage.setItem("phone", user.phone);
+        setRefresh((prev) => !prev);
+        navigate("/login");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
@@ -68,9 +60,9 @@ const Register = () => {
   };
 
   return (
-    <div className="register-container">
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="auth-container">
+      <h2 className="auth-title">Register</h2>
+      <form className="auth-form" onSubmit={handleSubmit}>
         <input
           type="text"
           name="name"
@@ -78,6 +70,7 @@ const Register = () => {
           value={user.name}
           onChange={handleChange}
           required
+          className="auth-input"
         />
         <input
           type="email"
@@ -86,6 +79,7 @@ const Register = () => {
           value={user.email}
           onChange={handleChange}
           required
+          className="auth-input"
         />
         <input
           type="password"
@@ -94,6 +88,7 @@ const Register = () => {
           value={user.password}
           onChange={handleChange}
           required
+          className="auth-input"
         />
         <input
           type="number"
@@ -102,33 +97,33 @@ const Register = () => {
           value={user.phone}
           onChange={handleChange}
           required
+          className="auth-input"
         />
         <input
           type="file"
           name="image"
           accept="image/*"
           onChange={handleImageChange}
+          className="auth-input"
         />
         {preview && (
-          <div style={{ marginBottom: "10px",position:"relative" }}>
-        
-          <button
-      type="button"
-      onClick={handleRemoveImage}
-      className="btnRemoveImg"
-    >
-      ×
-    </button>
-            <img
-              src={preview}
-              alt="Preview"
-              className="ImgPrevReg"
-            />
+          <div className="img-preview-wrapper">
+            <button
+              type="button"
+              onClick={handleRemoveImage}
+              className="btnRemoveImg"
+            >
+              ×
+            </button>
+            <img src={preview} alt="Preview" className="ImgPrevReg" />
           </div>
         )}
-        <button className="sub-Auth" type="submit">Register</button>
+        <button className="auth-button" type="submit">Register</button>
       </form>
-      <p className="PAuth">If you have an account please <Link className="GoAuth" to={"/login"}>click here</Link></p>
+      <p className="auth-text">
+        Already have an account?{" "}
+        <Link className="auth-link" to="/login">Login</Link>
+      </p>
     </div>
   );
 };

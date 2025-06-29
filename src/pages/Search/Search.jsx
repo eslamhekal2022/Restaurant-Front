@@ -7,7 +7,8 @@ const SearchComponent = () => {
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const query = new URLSearchParams(location.search).get('query');
-
+console.log("location",location)
+console.log("query",query)
   useEffect(() => {
     const fetchData = async () => {
       if (query && query.trim()) {
@@ -25,9 +26,7 @@ const SearchComponent = () => {
     fetchData();
   }, [query]);
 
-  // استخراج التصنيفات الفريدة من المنتجات
   const uniqueCategories = [...new Set(products.map(product => product.category))];
-
   return (
     <div>
       {products.length > 0 ? (
@@ -38,5 +37,4 @@ const SearchComponent = () => {
     </div>
   );
 };
-
 export default SearchComponent;

@@ -1,7 +1,7 @@
 /* الحاوية الرئيسية */
 .admin-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   flex-direction: row;
   position: relative;
 }
@@ -66,9 +66,9 @@
   width: 80%;
   padding: 20px;
   background-color: #ecf0f1;
-  overflow-y: auto;
+  overflow: visible;
+  height: auto;
 }
-
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 768px) {

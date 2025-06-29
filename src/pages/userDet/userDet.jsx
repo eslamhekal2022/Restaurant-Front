@@ -46,11 +46,16 @@ export default function UserDet() {
       );
 
       if (data.success) {
-        setuserDet(prev => ({ ...prev, image: data.data.image }));
-        dispatch(updateUserImage(data.data.image));
-        setTimestamp(Date.now());
-        toast.success('Image updated');
-      }
+  const newUser = { ...userDet, image: data.data.image };
+  
+  setuserDet(newUser);
+  dispatch(updateUserImage(data.data.image));
+  
+  localStorage.setItem("user", JSON.stringify(newUser));
+
+  setTimestamp(Date.now()); 
+  toast.success('Image updated');
+}
     } catch (err) {
       toast.error('Error uploading image');
     }

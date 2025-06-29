@@ -1,55 +1,62 @@
-import React, { useState } from 'react';
-import './contact.css';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import React from "react";
+import "./contact.css";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaTwitter,
+  FaPhone,
+  FaEnvelope,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ message: '' });
-  const [successMessage, setSuccessMessage] = useState('');
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-   const {data}=await axios.post(`${process.env.REACT_APP_API_URL}/addContact`,formData,{
-    headers:{
-        token:localStorage.getItem("token")
-    }
-   })
-if(data.success){
-    toast.success("good-Is-Flower")
-}
-} catch (error) {
-setSuccessMessage('Server error.');
-}
-};
-
-return (
+  return (
     <div className="contact-container">
-      <h2>Contact Us</h2>
-      <p>If you have any questions, feel free to reach out to us!</p>
+      <h2 className="contact-title">Contact Us</h2>
 
-      <form className="contact-form" onSubmit={handleSubmit}>
-       
-        <div className="form-group">
-          <label htmlFor="message">Your Message</label>
-          <textarea
-            id="message"
-            rows="5"
-            placeholder="Type your message..."
-            value={formData.message}
-            onChange={handleChange}
-            required
-          ></textarea>
+      <div className="contact-info">
+        <div className="info-box">
+          <FaMapMarkerAlt className="icon" />
+          <p>19 El-Motamad Wali St, Nasr City, Cairo, Egypt</p>
         </div>
+        <div className="info-box">
+          <FaPhone className="icon" />
+          <p>+20 123 456 7890</p>
+        </div>
+        <div className="info-box">
+          <FaEnvelope className="icon" />
+          <p>info@restaurant.com</p>
+        </div>
+      </div>
 
+      <div className="map-container">
+        <iframe
+          title="restaurant-location"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3451.9068500068447!2d31.2896214!3d30.096854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583fdc2174230f%3A0x43fe91736b95f532!2zMTkgRW10ZWRhZCBXYWxpIEFsIEFoZCwg2KfZhNiy2YrYqtmI2YYg2KfZhNmC2KjZhNmK2KnYjCDYp9mE2KPZhdmK2LHZitip2Iwg2YXYrdin2YHYuNipINin2YTZgtin2YfYsdip4oCsIDQ1MTEwMDM!5e0!3m2!1sar!2seg!4v1751146650392!5m2!1sar!2seg"
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+
+      <div className="social-media">
+        <a href="https://facebook.com" target="_blank" rel="noreferrer">
+          <FaFacebook />
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noreferrer">
+          <FaInstagram />
+        </a>
+        <a href="https://twitter.com" target="_blank" rel="noreferrer">
+          <FaTwitter />
+        </a>
+      </div>
+
+      <form className="contact-form">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" rows="4" required />
         <button type="submit">Send Message</button>
       </form>
-
-      {successMessage && <p className="message">{successMessage}</p>}
     </div>
   );
 };

@@ -2,36 +2,31 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import './login.css';
-import { setUserRedux } from "../../Redux/user.js";
 import { useDispatch } from "react-redux";
+import { setUserRedux } from "../../Redux/user.js";
+import './login.css';
 
 const Login = () => {
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
-  const dispatch=useDispatch()
+  const [user, setUser] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Handle Input Change
   const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle Form Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${process.env.REACT_APP_API_URL}/login`, user);
       if (res.data?.success) {
-        localStorage.setItem("token",res.data.token)
-        localStorage.setItem("userId",res.data.user.id)
-        console.log("res.dataLogin",)
-        const dataUser=res.data.user
-        dispatch(setUserRedux(dataUser))
-        localStorage.setItem("user", JSON.stringify(dataUser));
-navigate("/")
+        const { token, user: userData } = res.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", userData.id);
+        localStorage.setItem("user", JSON.stringify(userData));
+        dispatch(setUserRedux(userData));
+        navigate("/");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
@@ -39,11 +34,9 @@ navigate("/")
   };
 
   return (
-    <div className="register-container">
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-    
-    
+    <div className="auth-container">
+      <h2 className="auth-title">Login</h2>
+      <form className="auth-form" onSubmit={handleSubmit}>
         <input
           type="email"
           name="email"
@@ -51,6 +44,7 @@ navigate("/")
           value={user.email}
           onChange={handleChange}
           required
+          className="auth-input"
         />
         <input
           type="password"
@@ -59,11 +53,18 @@ navigate("/")
           value={user.password}
           onChange={handleChange}
           required
+          className="auth-input"
         />
-        <button className="sub-Auth" type="submit">Register</button>
+        <button className="auth-button" type="submit">Login</button>
       </form>
-      <p className="PAuth">if you don't have an account please        <Link className="GoAuth" to={"/register"}>click here</Link>
-      </p>      
+      <p className="auth-text">
+        Don’t have an account?{" "}
+        <Link className="auth-link" to="/register">Register</Link>
+      </p>
+      <p className="auth-text">
+        Forgot your password?{" "}
+        <Link className="auth-link" to="/ForgetPassword">Click here</Link>
+      </p>
     </div>
   );
 };
