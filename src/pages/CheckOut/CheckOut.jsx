@@ -69,7 +69,10 @@ export default function CheckoutPage() {
             <div className="checkout-items">
               {items.map((item, index) => (
                 <div key={index} className="checkout-item">
-<p><strong>{item.name}</strong> ({item.size}) × {item.quantity} — ${item.price?.toFixed(2)}</p>
+<div className="checkout-item">
+  <span><strong>{item.name}</strong> ({item.size})</span>
+  <span>{item.quantity} × ${item.price?.toFixed(2)}</span>
+</div>
                 </div>
               ))}
             </div>

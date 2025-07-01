@@ -1,5 +1,5 @@
 /* allusers.css */
-.all-users {
+/* .all-users {
   max-width: 1200px;
   margin: 40px auto;
   padding: 20px;
@@ -101,4 +101,75 @@
   font-size: 1.2rem;
   margin-top: 40px;
   color: #888;
+} */
+
+
+/*  */
+
+.all-users {
+  padding: 2rem;
+  background: #f9f9f9;
+  font-family: sans-serif;
+}
+
+.all-users h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.user-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  background-color: #2196f3;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: 0.2s;
+}
+
+.edit-btn:hover {
+  background-color: #1976d2;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: transparent;
+  color: #f44336;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.loader {
+  text-align: center;
+  padding: 2rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #4caf50;
 }

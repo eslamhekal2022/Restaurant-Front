@@ -53,7 +53,7 @@ export default function GetFilterCat({ category }) {
       {size.size.toUpperCase()} : {size.price} EGP
     </p>
   ))}
-            <button className="add-to-cart" onClick={() => handleAddToCart(x)}>Add To Cart 🛒</button>
+            <button className="add-to-cart-btn" onClick={() => handleAddToCart(x)}>Add To Cart 🛒</button>
 
 </div>            </div>
         ))}

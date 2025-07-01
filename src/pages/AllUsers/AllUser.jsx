@@ -1,78 +1,85 @@
-import Swal from 'sweetalert2';
+// pages/AllUsers/AllUser.jsx
 import React, { useEffect } from 'react';
+import Swal from 'sweetalert2';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 import { useUser } from '../../context/userContext.js';
+import { FaTrashAlt, FaEdit } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import './allusers.css';
-
+import loading from "../Loading/482219503_122111766968774860_1765049624887787653_n.jpg"
 export default function AllUser() {
-  const { users, loading, getAllUser,setRefresh } = useUser();
+  const { users, loading, getAllUser, setRefresh } = useUser();
 
   useEffect(() => {
     getAllUser();
   }, []);
 
-
   const deleteUser = async (id) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
+      title: 'هل أنت متأكد؟',
+      text: "لن تتمكن من التراجع عن هذا!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: 'نعم، احذفه!',
+      cancelButtonText: 'إلغاء',
     });
-  
+
     if (result.isConfirmed) {
       try {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/deleteUser/${id}`);
         if (response.data.success) {
-          toast.success("User deleted successfully");
+          toast.success("تم حذف المستخدم بنجاح");
           getAllUser();
-          setRefresh((prev)=>!prev)
-          Swal.fire('Deleted!', 'User has been deleted.', 'success');
+          setRefresh(prev => !prev);
+          Swal.fire('تم!', 'تم حذف المستخدم.', 'success');
         } else {
-          toast.error(response.data.message || "Error deleting user");
+          toast.error(response.data.message || "حدث خطأ أثناء الحذف");
         }
       } catch (error) {
-        toast.error(error.response?.data?.message || "Something went wrong");
+        toast.error(error.response?.data?.message || "حدث خطأ");
       }
     }
   };
 
-  if (loading) return <p className="loading">Loading...</p>;
-
+if (loading) {
+  return (
+    <div className="custom-loader-container">
+      <img src={loading} alt="Loading" className="custom-loader-image" />
+      <p className="custom-loader-text">جارٍ تحميل المستخدمين...</p>
+    </div>
+  );
+}
   return (
     <div className="all-users">
-      <h2>All Users</h2>
+      <h2>جميع المستخدمين</h2>
       <div className="user-list">
         {users.length > 0 ? (
           users.map((user) => (
             <div key={user._id} className="user-card">
-            <button
-                  className="delete-btn"
-                  onClick={() => deleteUser(user._id)}
-                  title="Delete User"
-                >
-                  <FaTrashAlt />
-                </button>
+              <button
+                className="delete-btn"
+                onClick={() => deleteUser(user._id)}
+                title="حذف المستخدم"
+              >
+                <FaTrashAlt />
+              </button>
+
               <div className="card-header">
-                <p><strong>Name:</strong> {user.name}</p>
-               
+                <p><strong>الاسم:</strong> {user.name}</p>
               </div>
-              <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>Role:</strong> {user.role}</p>
+              <p><strong>البريد الإلكتروني:</strong> {user.email}</p>
+              <p><strong>الدور:</strong> {user.role}</p>
+
               <Link className="edit-btn" to={`/UpdateRole/${user._id}`}>
-                <FaEdit /> Edit Role
+                <FaEdit /> تعديل الدور
               </Link>
             </div>
           ))
         ) : (
-          <p className="no-users">No users found.</p>
+          <p className="no-users">لا يوجد مستخدمين.</p>
         )}
       </div>
     </div>

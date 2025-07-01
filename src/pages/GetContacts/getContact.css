@@ -1,65 +1,51 @@
 .contacts-page {
   padding: 20px;
-  max-width: 100%;
+  max-width: 1000px;
   margin: auto;
 }
 
-.contacts-page h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.5rem;
+h2 {
+  margin-bottom: 15px;
 }
 
 .contacts-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  table-layout: fixed; /* يضمن توزيع الأعمدة بالتساوي */
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .contacts-table th,
 .contacts-table td {
+  padding: 10px;
   border: 1px solid #ddd;
-  padding: 12px;
   text-align: left;
-  font-size: 1rem;
-  word-wrap: break-word; /* يكسر الكلمات الطويلة */
 }
 
 .contacts-table th {
   background-color: #f4f4f4;
-  color: #333;
+  font-weight: bold;
 }
 
-.contacts-table tr:nth-child(even) {
-  background-color: #fafafa;
+.delete-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-/* Responsive styling */
-@media (max-width: 768px) {
-  .contacts-page {
-    padding: 10px;
-  }
-
-  .contacts-page h2 {
-    font-size: 1.25rem;
-  }
-
-  .contacts-table th,
-  .contacts-table td {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
+.delete-btn:hover {
+  background-color: #d9363e;
 }
 
-@media (max-width: 480px) {
-  .contacts-page h2 {
-    font-size: 1.1rem;
-  }
-
-  .contacts-table th,
-  .contacts-table td {
-    font-size: 0.85rem;
-    padding: 6px;
-  }
+.loader,
+.empty-message {
+  text-align: center;
+  font-weight: bold;
+  color: #666;
+  padding: 20px;
 }

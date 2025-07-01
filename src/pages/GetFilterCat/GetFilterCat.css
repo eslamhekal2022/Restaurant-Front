@@ -55,6 +55,20 @@
     white-space: nowrap;
     width: 100%;
 }
+
+
+
+
+.add-to-cart-btn {
+  background-color: #2196f3;
+  color: white;
+   padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease-in-out;
+}
 @media (max-width: 768px) {
     .LinkProductDet {
       width: 48%;

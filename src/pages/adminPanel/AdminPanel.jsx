@@ -1,32 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import "./adminPanel.css";
-import { Link, Outlet } from "react-router-dom";
 
 const AdminPanel = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const toggleSidebar = useCallback(() => {
+    setSidebarOpen((prev) => !prev);
+  }, []);
+
+  // ✅ أغلق الـ sidebar لما يتغير المسار (navigate)
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location]);
+
+  // ✅ أغلق الـ sidebar في الشاشات العريضة تلقائيًا
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="admin-container">
-
       <button className="menu-button" onClick={toggleSidebar}>
-        ☰
+        ☰ Menu
       </button>
-      
-      <aside className={`sidebar ${sidebarOpen ? "show" : ""}`}>
+
+      <nav className={`sidebar ${sidebarOpen ? "show" : ""}`}>
         <ul>
-          <li><Link to={""} onClick={() => setSidebarOpen(false)}> Dashboard </Link></li>
-          <li><Link to={"AddItem"} onClick={() => setSidebarOpen(false)}> Add to item</Link></li>
-          <li><Link to={"allProducts"} onClick={() => setSidebarOpen(false)}> All Products</Link></li>
-          <li><Link to={"allOrders"} onClick={() => setSidebarOpen(false)}>AllOrders</Link></li>
-          <li><Link to={"AllUser"} onClick={() => setSidebarOpen(false)}>All users</Link></li>
-          <li><Link to={"GetContacts"} onClick={() => setSidebarOpen(false)}>GetContacts</Link></li>
+          <li><Link to="">📊 Dashboard</Link></li>
+          <li><Link to="AddItem">➕ Add Item</Link></li>
+          <li><Link to="allProducts">📦 All Products</Link></li>
+          <li><Link to="allOrders">🧾 All Orders</Link></li>
+          <li><Link to="AllUser">👥 All Users</Link></li>
+          <li><Link to="GetContacts">📬 Contact Messages</Link></li>
         </ul>
-      </aside>
-      
+      </nav>
+
       <div className="main-content">
         <Outlet />
       </div>

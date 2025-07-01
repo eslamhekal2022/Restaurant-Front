@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './ProductDet.css';
-import { useCart } from '../../context/CartContext';
+import { useHandleAddToCart } from '../../utilits/handleAddCart.js';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { useHandleAddToCart } from '../../utilits/handleAddCart.js';
 import { FaStar } from 'react-icons/fa';
 
 export default function ProductDet() {
-  const [productDetails, setProductDet] = useState({ images: [], reviews: [] });
+  const { id } = useParams();
+  const { handleAddToCart } = useHandleAddToCart();
+  const userId = useMemo(() => localStorage.getItem("userId"), []);
+  const user = useSelector((x) => x.user.user);
+
+  const [productDetails, setProductDetails] = useState({ images: [], reviews: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [mainImage, setMainImage] = useState("");
@@ -18,51 +22,39 @@ export default function ProductDet() {
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [editRating, setEditRating] = useState(0);
   const [editComment, setEditComment] = useState("");
-  const { id } = useParams();
-    const { handleAddToCart } = useHandleAddToCart();
 
-  const user = useSelector((x) => x.user.user);
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
 
   const fetchProduct = async () => {
     try {
       const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/productDetails/${id}`);
       if (data.success) {
-        setProductDet(data.data);
-        console.log("productDet",data.data)
+        setProductDetails(data.data);
         setMainImage(`${process.env.REACT_APP_API_URL}${data.data.images[0]}`);
       } else {
         setError("لم يتم العثور على المنتج");
       }
-    } catch (err) {
+    } catch {
       setError(" خطأ في تحميل بيانات المنتج ");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchProduct();
-  }, [id]);
-
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/addProductReview/${id}`, {
-        rating,
-        comment,
-      }, {
-        headers: {
-          token: localStorage.getItem("token"),
-        },
-      });
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_API_URL}/addProductReview/${id}`,
+        { rating, comment },
+        { headers: { token: localStorage.getItem("token") } }
+      );
 
       if (data.success) {
         toast.success("تم إضافة التقييم بنجاح ✅");
-        setProductDet(prev => ({
-          ...prev,
-          reviews: data.product.reviews,
-          averageRating: data.product.averageRating,
-        }));
+        setProductDetails(prev => ({ ...prev, reviews: data.product.reviews, averageRating: data.product.averageRating }));
         setRating(0);
         setComment("");
       }
@@ -83,27 +75,20 @@ export default function ProductDet() {
   const submitEditReview = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.put(`${process.env.REACT_APP_API_URL}/editProductReview/${id}/${editingReviewId}`, {
-        rating: editRating,
-        comment: editComment,
-      }, {
-        headers: {
-          token: localStorage.getItem("token"),
-        }
-      });
+      const { data } = await axios.put(
+        `${process.env.REACT_APP_API_URL}/editProductReview/${id}/${editingReviewId}`,
+        { rating: editRating, comment: editComment },
+        { headers: { token: localStorage.getItem("token") } }
+      );
 
       if (data.success) {
         toast.success("تم تعديل التقييم بنجاح ✅");
-        setProductDet(prev => ({
-          ...prev,
-          reviews: data.product.reviews,
-          averageRating: data.product.averageRating,
-        }));
+        setProductDetails(prev => ({ ...prev, reviews: data.product.reviews, averageRating: data.product.averageRating }));
         setEditingReviewId(null);
         setEditRating(0);
         setEditComment("");
       }
-    } catch (err) {
+    } catch {
       toast.error("حدث خطأ أثناء تعديل التقييم ❌");
     }
   };
@@ -111,16 +96,14 @@ export default function ProductDet() {
   const handleDeleteReview = async (reviewId) => {
     try {
       const { data } = await axios.delete(`${process.env.REACT_APP_API_URL}/deleteProductReview/${id}/${reviewId}`, {
-        headers: {
-          token: localStorage.getItem("token"),
-        }
+        headers: { token: localStorage.getItem("token") }
       });
 
       if (data.success) {
         toast.success("تم حذف التقييم بنجاح ✅");
         fetchProduct();
       }
-    } catch (err) {
+    } catch {
       toast.error("فشل حذف التقييم ❌");
     }
   };
@@ -134,45 +117,39 @@ export default function ProductDet() {
         <div className="product-left">
           <div className="product-main-image">
             <img src={mainImage} alt={productDetails.name} className="main-image" />
-     {productDetails.averageRating ? 
-         <div className="star-container">
-  <FaStar className="star-icon" />
-<span className="star-text">
-{Number.isInteger(productDetails.averageRating)
-  ? `${productDetails.averageRating} `
-  : productDetails.averageRating.toFixed(1)}
-</span>
-</div>
-: null}
+            {productDetails.averageRating && (
+              <div className="star-container">
+                <FaStar className="star-icon" />
+                <span className="star-text">
+                  {Number.isInteger(productDetails.averageRating) ? productDetails.averageRating : productDetails.averageRating.toFixed(1)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {productDetails.images.length > 1 && (
+            <div className="product-thumbnails">
+              {productDetails.images.map((img, index) => (
+                <img
+                  key={index}
+                  src={`${process.env.REACT_APP_API_URL}${img}`}
+                  alt={`thumb-${index}`}
+                  className="thumbnail"
+                  onClick={() => setMainImage(`${process.env.REACT_APP_API_URL}${img}`)}
+                />
+              ))}
             </div>
- 
-            {productDetails.images.length>1?      <div className="product-thumbnails">
-            {productDetails.images.map((img, index) => (
-              <img
-                key={index}
-                src={`${process.env.REACT_APP_API_URL}${img}`}
-                alt={`thumb-${index}`}
-                className="thumbnail"
-                onClick={() => setMainImage(`${process.env.REACT_APP_API_URL}${img}`)}
-              />
-            ))}
-          </div>:null
-        }
+          )}
         </div>
 
         <div className="product-right">
           <p className="product-category">Category: {productDetails.category}</p>
-
-
-
           <h1 className="product-title">{productDetails.name.toUpperCase()}</h1>
+
           <div className="product-description">
-            {productDetails.description
-              .split('*')
-              .filter(item => item.trim())
-              .map((item, idx) => (
-                <p key={idx}>🥄 {item.trim()}</p>
-              ))}
+            {productDetails.description.split('*').filter(Boolean).map((item, idx) => (
+              <p key={idx}>🥄 {item.trim()}</p>
+            ))}
           </div>
 
           {productDetails.sizes.map((size, idx) => (
@@ -181,15 +158,12 @@ export default function ProductDet() {
             </p>
           ))}
 
-          <button className="add-to-cart" onClick={() => handleAddToCart(productDetails)}>Add To Cart 🛒</button>
-
-         
-
-
+          <button className="add-to-cart" onClick={() => handleAddToCart(productDetails)}>
+            Add To Cart 🛒
+          </button>
         </div>
       </div>
 
-      {/* التقييمات */}
       <div className="reviews">
         <h3 className="reviews-title">Reviews:</h3>
         {productDetails.reviews.length === 0 ? (
@@ -199,15 +173,9 @@ export default function ProductDet() {
             <div key={review._id} className="review">
               {editingReviewId === review._id ? (
                 <form onSubmit={submitEditReview}>
-                  <select
-                    value={editRating}
-                    onChange={(e) => setEditRating(Number(e.target.value))}
-                    required
-                  >
+                  <select value={editRating} onChange={(e) => setEditRating(Number(e.target.value))} required>
                     <option value="">Choose Rating</option>
-                    {[1, 2, 3, 4, 5].map(num => (
-                      <option key={num} value={num}>⭐ {num}</option>
-                    ))}
+                    {[1, 2, 3, 4, 5].map(num => <option key={num} value={num}>⭐ {num}</option>)}
                   </select>
                   <textarea
                     value={editComment}
@@ -222,7 +190,7 @@ export default function ProductDet() {
                   <p><strong>{review.userId.name}</strong></p>
                   <p>⭐ {review.rating} / 5</p>
                   <p>{review.comment}</p>
-                  {review.userId._id === localStorage.getItem("userId") && (
+                  {review.userId._id === userId && (
                     <>
                       <button onClick={() => handleEditReview(review._id)}>✏️ Edit</button>
                       <button onClick={() => handleDeleteReview(review._id)}>🗑️ Delete</button>
@@ -235,19 +203,12 @@ export default function ProductDet() {
         )}
       </div>
 
-      {/* إضافة تقييم */}
       <div className="add-review">
         <h3>Add your review:</h3>
         <form onSubmit={handleReviewSubmit}>
-          <select
-            value={rating}
-            onChange={(e) => setRating(Number(e.target.value))}
-            required
-          >
+          <select value={rating} onChange={(e) => setRating(Number(e.target.value))} required>
             <option value="">Choose your Rating</option>
-            {[1, 2, 3, 4, 5].map(num => (
-              <option key={num} value={num}>⭐ {num}</option>
-            ))}
+            {[1, 2, 3, 4, 5].map(num => <option key={num} value={num}>⭐ {num}</option>)}
           </select>
           <textarea
             value={comment}

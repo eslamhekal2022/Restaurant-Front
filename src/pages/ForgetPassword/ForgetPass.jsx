@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./forgetPassword.css"; // لو هتنسق ب CSS خارجي
+import "./forgetPassword.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,8 @@ export default function ForgetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
+
   const handleForgetPassword = async (e) => {
     e.preventDefault();
 
@@ -18,9 +19,14 @@ export default function ForgetPassword() {
       return;
     }
 
+    if (newPassword.length < 6) {
+      toast.error("كلمة المرور يجب أن تكون 6 حروف أو أكثر");
+      return;
+    }
+
     try {
       setLoading(true);
-      const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/forgetPassword`, {
+      const { data } = await axios.post(`${process.env.REACT_APP_API_URL}/forgetPassword`, {
         email,
         newPassword
       });
@@ -29,7 +35,7 @@ export default function ForgetPassword() {
         toast.success(data.message);
         setEmail("");
         setNewPassword("");
-        navigate("/login")
+        navigate("/login");
       } else {
         toast.error(data.message);
       }
@@ -44,13 +50,14 @@ export default function ForgetPassword() {
   return (
     <div className="forget-container">
       <form className="forget-form" onSubmit={handleForgetPassword}>
-        <h2>Forget your Password</h2>
+        <h2>🔐 Forget your Password</h2>
 
         <input
           type="email"
           placeholder="Enter your Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
@@ -58,10 +65,11 @@ export default function ForgetPassword() {
           placeholder="Enter New password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
+          required
         />
 
         <button type="submit" disabled={loading}>
-          {loading ? "Updating" : "update your password"}
+          {loading ? "⏳ Updating..." : "🔄 Update Password"}
         </button>
       </form>
     </div>

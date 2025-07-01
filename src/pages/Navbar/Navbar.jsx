@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext.js';
 import { useUser } from '../../context/userContext.js';
 import { useSelector } from 'react-redux';
-import logo from "../ProductsUmages/Logo.png"
+import logo from "../Loading/482219503_122111766968774860_1765049624887787653_n.jpg"
 import { MdRestaurantMenu  } from "react-icons/md";
 
 export default function Navbar() {
